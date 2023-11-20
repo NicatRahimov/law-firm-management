@@ -1,8 +1,6 @@
 package az.coders.lawfirmmanagement.service;
 
-import az.coders.lawfirmmanagement.dto.ImageDto;
 import az.coders.lawfirmmanagement.model.Image;
-import az.coders.lawfirmmanagement.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

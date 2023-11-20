@@ -1,28 +1,21 @@
 package az.coders.lawfirmmanagement.service;
 
-import az.coders.lawfirmmanagement.dto.ImageDto;
 import az.coders.lawfirmmanagement.dto.request.GrantRequest;
 import az.coders.lawfirmmanagement.dto.request.RefreshTokenRequest;
 import az.coders.lawfirmmanagement.dto.request.SignInRequest;
 import az.coders.lawfirmmanagement.dto.request.SignUpRequest;
 import az.coders.lawfirmmanagement.dto.response.JwtAuthResponse;
 import az.coders.lawfirmmanagement.enums.Role;
-import az.coders.lawfirmmanagement.model.Image;
 import az.coders.lawfirmmanagement.model.User;
 import az.coders.lawfirmmanagement.repository.UserRepository;
 import az.coders.lawfirmmanagement.service.Impl.JWTServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.*;
 
 @Service
