@@ -1,23 +1,17 @@
 package az.coders.lawfirmmanagement.service.Impl;
 
 
-import az.coders.lawfirmmanagement.dto.UserDto;
 import az.coders.lawfirmmanagement.model.User;
 import az.coders.lawfirmmanagement.repository.UserRepository;
 import az.coders.lawfirmmanagement.service.ImageService;
 import az.coders.lawfirmmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Base64;
+
 import java.util.List;
 
 @Service

@@ -1,25 +1,20 @@
 package az.coders.lawfirmmanagement.service.Impl;
 
-import az.coders.lawfirmmanagement.dto.ImageDto;
 import az.coders.lawfirmmanagement.model.Image;
 import az.coders.lawfirmmanagement.model.User;
 import az.coders.lawfirmmanagement.repository.ImageRepository;
 import az.coders.lawfirmmanagement.repository.UserRepository;
 import az.coders.lawfirmmanagement.service.ImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.List;
 
 @Service
