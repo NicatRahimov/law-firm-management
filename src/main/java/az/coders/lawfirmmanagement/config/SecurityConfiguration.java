@@ -1,7 +1,6 @@
 package az.coders.lawfirmmanagement.config;
 
 
-import az.coders.lawfirmmanagement.enums.Role;
 import az.coders.lawfirmmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
