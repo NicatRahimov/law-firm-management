@@ -6,6 +6,7 @@ import az.coders.lawfirmmanagement.model.User;
 import az.coders.lawfirmmanagement.repository.UserRepository;
 import az.coders.lawfirmmanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,8 @@ public class UserController {
     }
 
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable String username) throws IOException {
-       return userService.getByUsername(username);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) throws IOException {
+       return new ResponseEntity<>(userService.getById(id), HttpStatusCode.valueOf(200));
     }
 }

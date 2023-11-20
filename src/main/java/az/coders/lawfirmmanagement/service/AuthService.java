@@ -32,28 +32,25 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTServiceImpl jwtServiceImpl;
-    private final ImageService imageService;
-
-
-    public User signUpReq(SignUpRequest signUpRequest) throws IOException {
+    public User signUpReq(SignUpRequest signUpRequest){
         User user = new User();
 
         if(userRepository.findByUsername(signUpRequest.getEmail())==null){
 
-            ImageDto imageDto = ImageDto.builder()
-                    .base64(signUpRequest.getPhotoBase64())
-                    .name(signUpRequest.getFirstName()+"_user_"+ (int) (Math.random() * 9000) +1000+".jpg")
-                    .build();   //for saving file system
+//            ImageDto imageDto = ImageDto.builder()
+//                    .base64(signUpRequest.getPhotoBase64())
+//                    .name(signUpRequest.getFirstName()+"_user_"+ (int) (Math.random() * 90)+".jpg")
+//                    .build();   //for saving file system
+//Image image = Image.builder()
+//                .name(imageDto.getName())
+//        .base64(imageDto.getBase64())
+//                        .build();   //save name to db
 
-Image image = Image.builder()
-                .name(imageDto.getName())
-                        .build();   //save name to db
-
-            Image image1 = imageService.saveImage(image);
-
-            if (image1!=null){
-                imageService.uploadImage(imageDto);
-            }
+//            Image image1 = imageService.saveImage(image);
+//
+//            if (image1!=null){
+//                imageService.uploadImage(imageDto);
+//            }
 
 
             user.setFirstName(signUpRequest.getFirstName());
@@ -61,19 +58,16 @@ Image image = Image.builder()
             user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
             user.setUsername(signUpRequest.getEmail());
             user.setRole(Role.USER);
-            user.setImage(image);
+//            user.setImage(image);
 
 
             userRepository.save(user);
 
         }
-
         return user;
-
     }
 
         public JwtAuthResponse signIn(SignInRequest signInRequest){
-        System.out.println(signInRequest.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
                 signInRequest.getPassword()));
 

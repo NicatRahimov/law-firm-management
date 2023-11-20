@@ -8,6 +8,9 @@ import az.coders.lawfirmmanagement.repository.UserRepository;
 import az.coders.lawfirmmanagement.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,51 +20,104 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-    @Value("${photo.directory}")
-     static String DIRECTORY;
+
+    public static String DIRECTORY="/home/nicat/Desktop/law-firm-management/src/main/resources/profile photos/";
 
 private final ImageRepository imageRepository;
 private final UserRepository userRepository;
 
     @Override
-    public void uploadImage(ImageDto imageDto) throws IOException {
-        String filePath=DIRECTORY+imageDto.getName();
+    public ResponseEntity<String> uploadImage(MultipartFile file,Long id) throws IOException {
+        if (file.isEmpty()) {
+            throw new RuntimeException();
+        }
 
+        User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("user not found"));
 
-            // Decode Base64 string to bytes
-            byte[] decodedBytes = Base64.getDecoder().decode(imageDto.getBase64());
+        Image image = new Image();
+        String fileName = saveToFileSys(file);
 
-            // Specify the file path and name where you want to save the file
+        if (user.getImage() == null) {
+            image.setName(fileName);
+            imageRepository.save(image);
+            user.setImage(image);
+            userRepository.save(user);
+        }else {
+            String imageName = user.getImage().getName();
+            Image byName = imageRepository.findByName(imageName);
+            byName.setName(fileName);
+            imageRepository.save(byName);
+        }
+        return new ResponseEntity<>("good",HttpStatusCode.valueOf(200));
+    }
 
-            // Save the decoded bytes to a file
-            Files.write(Path.of(filePath), decodedBytes);
+    private String saveToFileSys(MultipartFile file) throws IOException {
+        // Generate a unique file name (you may use your own logic)
+        String fileName =  file.getOriginalFilename() + "_" + System.currentTimeMillis();
+
+        // Build the file path
+        Path filePath = Paths.get(DIRECTORY).resolve(fileName);
+
+        // Save the file to the specified directory
+        file.transferTo(filePath.toFile());
+
+//            // Build the download URL for the client
+//            String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                    .path("/downloadFile/")
+//                    .path(fileName)
+//                    .toUriString();
+        return fileName;
 
     }
 
     @Override
-    public String downloadImage(String username) throws IOException {
+    public ResponseEntity<byte[]> downloadImage(Long id) throws IOException {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("user not found"));
 
         Image userImage = user.getImage();
 
-        String imageDir = DIRECTORY + userImage.getName();
+//        String imageDir = DIRECTORY + userImage.getName();
+//
+//        byte[] imageData = Files.readAllBytes(Paths.get(imageDir));
+//
+//        return Base64.getEncoder().encodeToString(imageData);//image base64 formatted
 
-        byte[] imageData = Files.readAllBytes(Paths.get(imageDir));
+            // Resolve the image file path
+            Path imagePath = Paths.get(DIRECTORY).resolve(userImage.getName());
 
-        return Base64.getEncoder().encodeToString(imageData);   //image base64 formatted
+            // Read the image bytes
+            byte[] imageBytes = Files.readAllBytes(imagePath);
 
-    }
+            // Set the content type and headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Adjust the media type based on your image format
+            headers.setContentDispositionFormData("inline", userImage.getName());
+
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        }
 
     @Override
     public Image saveImage(Image image) {
         Image image1 = imageRepository.save(image);
         return image1;
     }
+
+    @Override
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
+    }
+
+    @Override
+    public Image getById(Long id) {
+       return imageRepository.findById(id).orElseThrow(()->new RuntimeException("Image not found"));
+    }
+
 
 }

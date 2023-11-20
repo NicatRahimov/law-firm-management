@@ -1,9 +1,11 @@
 package az.coders.lawfirmmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Data
 @Entity
@@ -19,6 +21,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @NotBlank(message = "Set photo name...")
     String name;
 
 }

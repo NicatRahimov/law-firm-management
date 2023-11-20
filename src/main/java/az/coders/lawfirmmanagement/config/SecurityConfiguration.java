@@ -38,7 +38,9 @@ public class SecurityConfiguration {
                         auth.requestMatchers("/api/auth/**")
                                 .permitAll()
                                 .requestMatchers("/users/**")
-                                .hasRole(Role.ADMIN.name())
+                                .permitAll()
+                                .requestMatchers("/images/**")
+                                .permitAll()
                 );
         http.authenticationProvider(authenticationProvider());
 

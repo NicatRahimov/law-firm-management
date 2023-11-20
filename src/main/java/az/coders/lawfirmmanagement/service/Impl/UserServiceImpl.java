@@ -38,27 +38,38 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public ResponseEntity<UserDto> getByUsername(String username) throws IOException {
-        User user = userRepository.findByUsername(username);
-
-        File file = new File(ImageServiceImpl.DIRECTORY + user.getImage().getName());
-
-        UserDto userDto = UserDto.builder().firstName(user.getFirstName())
-                .secondName(user.getSecondName())
-                .password(user.getPassword())
-                .role(user.getRole())
-                .username(user.getUsername())
-                .id(user.getId())
-                .base64Photo(imageService.downloadImage(username))
-                .build();
-
-        return new ResponseEntity<>( userDto,HttpStatusCode.valueOf(200));
-    }
+//    @Override
+//    public ResponseEntity<UserDto> getByUsername(String username) throws IOException {
+//        User user = userRepository.findByUsername(username);
+//
+//        File file = new File(ImageServiceImpl.DIRECTORY + user.getImage().getName());
+//
+//        UserDto userDto = UserDto.builder().firstName(user.getFirstName())
+//                .secondName(user.getSecondName())
+//                .password(user.getPassword())
+//                .role(user.getRole())
+//                .username(user.getUsername())
+//                .id(user.getId())
+//                .base64Photo(imageService.downloadImage(username))
+//                .build();
+//
+//        return new ResponseEntity<>( userDto,HttpStatusCode.valueOf(200));
+//    }
 
     @Override
     public List<User> getAllUsers() {
+        System.out.println(userRepository.findAll());
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("not found"));
+    }
+
+    @Override
+    public void saveUser(User user) {
+userRepository.save(user);
     }
 
 

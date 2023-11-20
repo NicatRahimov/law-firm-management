@@ -14,7 +14,11 @@ public interface UserService {
 
     UserDetailsService userDetailsService();
 
-    ResponseEntity<UserDto> getByUsername(String username) throws IOException;
+//    ResponseEntity<UserDto> getByUsername(String username) throws IOException;
 
     List<User> getAllUsers();
+
+    User getById(Long id);
+
+    void saveUser(User user);
 }
