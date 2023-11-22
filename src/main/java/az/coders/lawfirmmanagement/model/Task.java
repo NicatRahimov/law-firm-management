@@ -16,13 +16,13 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long iddd;
 
     @NotBlank
     String name;
 
     @Enumerated(EnumType.STRING)
-    Priority prioritya
+    Priority priority;
 
 
     String description;
