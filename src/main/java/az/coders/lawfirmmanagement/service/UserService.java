@@ -18,4 +18,8 @@ public interface UserService {
     User getById(Long id);
 
     void saveUser(User user);
+
+    User getByUsername(String username);
+
+    User getByEmail(String email);
 }

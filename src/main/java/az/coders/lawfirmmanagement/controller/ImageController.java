@@ -28,7 +28,7 @@ public class ImageController {
   }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> uploadPhoto(@PathVariable("id") Long id) throws IOException {
+    public ResponseEntity<byte[]> downloadPhoto(@PathVariable("id") Long id) {
         return imageService.downloadImage(id);
     }
 

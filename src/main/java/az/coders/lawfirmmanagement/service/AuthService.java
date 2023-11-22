@@ -29,27 +29,11 @@ public class AuthService {
         User user = new User();
 
         if(userRepository.findByUsername(signUpRequest.getEmail())==null){
-
-//            ImageDto imageDto = ImageDto.builder()
-//                    .base64(signUpRequest.getPhotoBase64())
-//                    .name(signUpRequest.getFirstName()+"_user_"+ (int) (Math.random() * 90)+".jpg")
-//                    .build();   //for saving file system
-//Image image = Image.builder()
-//                .name(imageDto.getName())
-//        .base64(imageDto.getBase64())
-//                        .build();   //save name to db
-
-//            Image image1 = imageService.saveImage(image);
-//
-//            if (image1!=null){
-//                imageService.uploadImage(imageDto);
-//            }
-
-
             user.setFirstName(signUpRequest.getFirstName());
             user.setSecondName(signUpRequest.getLastName());
             user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-            user.setUsername(signUpRequest.getEmail());
+            user.setUsername(signUpRequest.getUsername());
+            user.setEmail(signUpRequest.getEmail());
             user.setRole(Role.USER);
 //            user.setImage(image);
 
@@ -61,10 +45,10 @@ public class AuthService {
     }
 
         public JwtAuthResponse signIn(SignInRequest signInRequest){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(),
                 signInRequest.getPassword()));
 
-        User user = userRepository.findByUsername(signInRequest.getEmail());
+        User user = userRepository.findByUsername(signInRequest.getUsername());
         String jwt = jwtServiceImpl.generateToken(user);
 
         String refreshToken = jwtServiceImpl.generateRefreshToken(new HashMap<>(),user);

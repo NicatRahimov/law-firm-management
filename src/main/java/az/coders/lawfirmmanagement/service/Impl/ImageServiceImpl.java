@@ -1,5 +1,6 @@
 package az.coders.lawfirmmanagement.service.Impl;
 
+import az.coders.lawfirmmanagement.exception.ImageDownloadFailed;
 import az.coders.lawfirmmanagement.model.Image;
 import az.coders.lawfirmmanagement.model.User;
 import az.coders.lawfirmmanagement.repository.ImageRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +32,7 @@ private final UserRepository userRepository;
     @Override
     public ResponseEntity<String> uploadImage(MultipartFile file,Long id) throws IOException {
         if (file.isEmpty()) {
-            throw new RuntimeException();
+            throw new FileNotFoundException();
         }
 
         User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("user not found"));
@@ -72,19 +74,13 @@ private final UserRepository userRepository;
     }
 
     @Override
-    public ResponseEntity<byte[]> downloadImage(Long id) throws IOException {
+    public ResponseEntity<byte[]> downloadImage(Long id) {
 
         User user = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("user not found"));
 
         Image userImage = user.getImage();
 
-//        String imageDir = DIRECTORY + userImage.getName();
-//
-//        byte[] imageData = Files.readAllBytes(Paths.get(imageDir));
-//
-//        return Base64.getEncoder().encodeToString(imageData);//image base64 formatted
-
-            // Resolve the image file path
+        try{
             Path imagePath = Paths.get(DIRECTORY).resolve(userImage.getName());
 
             // Read the image bytes
@@ -96,6 +92,10 @@ private final UserRepository userRepository;
             headers.setContentDispositionFormData("inline", userImage.getName());
 
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        }catch (IOException e){
+            throw new ImageDownloadFailed();
+        }
+
         }
 
     @Override

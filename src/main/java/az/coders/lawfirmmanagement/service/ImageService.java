@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface ImageService {
     ResponseEntity<String> uploadImage(MultipartFile multipartFile,Long id) throws IOException;
-    ResponseEntity<byte[]> downloadImage(Long id) throws IOException;
+    ResponseEntity<byte[]> downloadImage(Long id) ;
 
     Image saveImage(Image image);
 

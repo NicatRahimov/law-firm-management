@@ -1,5 +1,7 @@
 package az.coders.lawfirmmanagement.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -8,9 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SignUpRequest {
+     @NotBlank
      String firstName;
+     @NotBlank
      String lastName;
-     String email;
+     @NotBlank
+     String username;
+     @NotBlank
      String password;
-     String photoBase64;
+     @NotBlank
+     String email;
 }
