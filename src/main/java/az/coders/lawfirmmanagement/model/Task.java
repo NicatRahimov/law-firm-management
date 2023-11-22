@@ -22,7 +22,7 @@ public class Task {
     String name;
 
     @Enumerated(EnumType.STRING)
-    Priority priority;
+    Priority prioritya
 
 
     String description;
