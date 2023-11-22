@@ -16,7 +16,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long iddd;
+    Long id;
 
     @NotBlank
     String name;
