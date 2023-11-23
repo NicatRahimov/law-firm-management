@@ -27,6 +27,8 @@ public class Task {
 
     String description;
 
+
     @ManyToOne
+    @JoinColumn(name = "case_id") // Defines the foreign key column
    Case aCase;
 }
