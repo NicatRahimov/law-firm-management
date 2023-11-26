@@ -1,3 +1,5 @@
+
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.5'
@@ -32,10 +34,14 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+
+	//jwt
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.3'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.3'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.3'
 
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
+	testImplementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.1.0'
 
 }
 
@@ -46,3 +52,4 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

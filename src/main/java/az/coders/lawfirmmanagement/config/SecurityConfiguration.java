@@ -2,9 +2,11 @@ package az.coders.lawfirmmanagement.config;
 
 
 import az.coders.lawfirmmanagement.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,10 +17,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
 @EnableWebSecurity
@@ -32,15 +36,19 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http.csrf(AbstractHttpConfigurer::disable).exceptionHandling(
+                exc->{
+            exc.accessDeniedHandler(customAccessDeniedHandler())
+                    .authenticationEntryPoint(customAuthenticationEntryPoint());
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**")
-                                .permitAll()
-                                .requestMatchers("/users/**")
-                                .permitAll()
-                                .requestMatchers("/images/**")
+                        auth.requestMatchers("/api/auth/**",
+                                        "/users/**",
+                                        "/images/**",
+                                        "/swagger-ui.html",
+                                        "/api-docs"
+                                )
                                 .permitAll()
                 );
         http.authenticationProvider(authenticationProvider());
@@ -49,22 +57,49 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+
+
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userService.userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
 
+    }
+
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+
+
+    private AuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return (request, response, authException) -> {
+            // Custom logic for handling authentication entry point
+            // For example, return an error response as JSON
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(objectMapper().writeValueAsString("Unauthorized"));
+        };
+    }
+    private AccessDeniedHandler customAccessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            // Custom logic for handling access denied
+            // For example, return an error response as JSON
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write(objectMapper().writeValueAsString("Access Denied"));
+        };
     }
 }
