@@ -36,18 +36,20 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).exceptionHandling(
-                exc->{
-            exc.accessDeniedHandler(customAccessDeniedHandler())
-                    .authenticationEntryPoint(customAuthenticationEntryPoint());
-                })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        http.csrf(AbstractHttpConfigurer::disable)
+//                .exceptionHandling(
+//                        exc->{
+//                            exc.accessDeniedHandler(customAccessDeniedHandler())
+//                                    .authenticationEntryPoint(customAuthenticationEntryPoint());
+//                        })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**",
                                         "/users/**",
                                         "/images/**",
                                         "/swagger-ui.html",
-                                        "/api-docs"
+                                        "/api-docs",
+                                        "/tasks/**"
                                 )
                                 .permitAll()
                 );

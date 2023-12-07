@@ -39,7 +39,6 @@ public class AuthenticationController {
         if (userService.getByUsername(sign.getUsername())==null &&
             userService.getByEmail(sign.getEmail())==null){
             user = authService.signUpReq(sign);
-            System.out.println(user);
         }
 
         if (user.getId() != null) {
@@ -51,7 +50,8 @@ public class AuthenticationController {
     }
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> signIn(@RequestBody SignInRequest sign){
-        return new ResponseEntity<>(authService.signIn(sign), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(authService.signIn(sign),
+                HttpStatusCode.valueOf(200));
     }
 
     @PostMapping("/refresh")

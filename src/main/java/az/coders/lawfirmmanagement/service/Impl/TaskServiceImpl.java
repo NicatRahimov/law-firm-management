@@ -1,5 +1,6 @@
 package az.coders.lawfirmmanagement.service.Impl;
 
+import az.coders.lawfirmmanagement.dto.TaskDto;
 import az.coders.lawfirmmanagement.exception.TaskNotFound;
 import az.coders.lawfirmmanagement.model.Task;
 import az.coders.lawfirmmanagement.repository.TaskRepository;
@@ -39,14 +40,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String editTask(Task task, Long taskId) {
-        Task task1 = taskRepository.findById(taskId).orElseThrow(()->new TaskNotFound("Task not found"));
+    public String editTask(TaskDto task) {
+        Task task1 = taskRepository.findById(task.getId()).orElseThrow(()->new TaskNotFound("Task not found"));
 
-        task1.setName(task.getName());
-        task1.setDescription(task.getDescription());
-        task1.setPriority(task.getPriority());
-        task1.setACase(task.getACase());
-
+        if (task.getName()!=null){
+            task1.setName(task.getName());
+        }
+        if (task.getDescription()!=null){
+            task1.setDescription(task.getDescription());
+        }
+        if (task.getPriority()!=null){
+            task1.setPriority(task.getPriority());
+        }
+        if (task.getACase()!=null){
+            task1.setACase(task.getACase());
+        }
         taskRepository.save(task1);
 
         return "Edited successfully";

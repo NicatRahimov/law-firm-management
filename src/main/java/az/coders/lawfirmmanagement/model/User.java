@@ -37,12 +37,9 @@ public class User implements UserDetails {
     @Size(min = 2, max = 20)
     String secondName;
 
-    @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Username should only contain letters, numbers, and underscores")
     String username;
 
-    @Email
-    @NotBlank
     String email;
 
     @Size(min = 8)

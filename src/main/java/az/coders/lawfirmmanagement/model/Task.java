@@ -27,8 +27,11 @@ public class Task {
 
     String description;
 
+    Integer remindDate;
 
     @ManyToOne
     @JoinColumn(name = "case_id") // Defines the foreign key column
    Case aCase;
+
+
 }

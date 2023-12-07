@@ -25,10 +25,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTServiceImpl jwtServiceImpl;
-    public User signUpReq(SignUpRequest signUpRequest){
+
+    public User signUpReq(SignUpRequest signUpRequest) {
         User user = new User();
 
-        if(userRepository.findByUsername(signUpRequest.getEmail())==null){
+        if (userRepository.findByUsername(signUpRequest.getEmail()) == null) {
             user.setFirstName(signUpRequest.getFirstName());
             user.setSecondName(signUpRequest.getLastName());
             user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
@@ -44,14 +45,15 @@ public class AuthService {
         return user;
     }
 
-        public JwtAuthResponse signIn(SignInRequest signInRequest){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(),
-                signInRequest.getPassword()));
-
-        User user = userRepository.findByUsername(signInRequest.getUsername());
+    public JwtAuthResponse signIn(SignInRequest signInRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
+                        signInRequest.getPassword()));
+        System.out.println(signInRequest);
+        User user = userRepository.findByUsername(signInRequest.getEmail());
+        System.out.println(user);
         String jwt = jwtServiceImpl.generateToken(user);
 
-        String refreshToken = jwtServiceImpl.generateRefreshToken(new HashMap<>(),user);
+        String refreshToken = jwtServiceImpl.generateRefreshToken(new HashMap<>(), user);
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
 
 
@@ -61,14 +63,14 @@ public class AuthService {
         return jwtAuthResponse;
     }
 
-    public JwtAuthResponse refreshToken (RefreshTokenRequest refresh){
+    public JwtAuthResponse refreshToken(RefreshTokenRequest refresh) {
 
         String token = refresh.getToken();
         String username = jwtServiceImpl.extractUsername(token);
         User user = userRepository.findByUsername(username);
 
 
-        if (jwtServiceImpl.isTokenValid(token,user)){
+        if (jwtServiceImpl.isTokenValid(token, user)) {
             String newToken = jwtServiceImpl.generateToken(user);
 
             JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
@@ -78,7 +80,7 @@ public class AuthService {
 
 
             return jwtAuthResponse;
-        }else return null;
+        } else return null;
 
     }
 
@@ -92,8 +94,8 @@ public class AuthService {
 
         userRepository.save(user);
 
-      return JwtAuthResponse.builder()
-               .token(jwtServiceImpl.generateToken(user))
-               .build();
+        return JwtAuthResponse.builder()
+                .token(jwtServiceImpl.generateToken(user))
+                .build();
     }
 }
