@@ -49,7 +49,8 @@ public class SecurityConfiguration {
                                         "/images/**",
                                         "/swagger-ui.html",
                                         "/api-docs",
-                                        "/tasks/**"
+                                        "/tasks/**",
+                                        "/cases"
                                 )
                                 .permitAll()
                 );

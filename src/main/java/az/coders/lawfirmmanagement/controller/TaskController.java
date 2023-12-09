@@ -28,7 +28,7 @@ public ResponseEntity<Task>getTaskById(@PathVariable Long id){
     return new
             ResponseEntity<>(taskService.getTaskById(id),HttpStatusCode.valueOf(200));
 }
-@PostMapping("/add")
+@PostMapping()
     public ResponseEntity<String> addTask (@RequestBody Task task){
     return new
             ResponseEntity<>(taskService.saveTask(task), HttpStatus.CREATED);
@@ -43,7 +43,7 @@ public ResponseEntity<Task>getTaskById(@PathVariable Long id){
 }
 
 
-@PutMapping("/edit")
+@PutMapping()
     public ResponseEntity<String> editTask(@RequestBody TaskDto taskDto){
 
     return new
