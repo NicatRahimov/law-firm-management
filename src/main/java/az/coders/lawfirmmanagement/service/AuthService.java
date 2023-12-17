@@ -46,10 +46,10 @@ public class AuthService {
     }
 
     public JwtAuthResponse signIn(SignInRequest signInRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(),
                         signInRequest.getPassword()));
         System.out.println(signInRequest);
-        User user = userRepository.findByUsername(signInRequest.getEmail());
+        User user = userRepository.findByUsername(signInRequest.getUsername()   );
         System.out.println(user);
         String jwt = jwtServiceImpl.generateToken(user);
 

@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                                         "/images/**",
                                         "/api-docs",
                                         "/tasks/**",
-                                        "/cases"
+                                        "/cases/**"
                                 )
                                 .permitAll()
                 );

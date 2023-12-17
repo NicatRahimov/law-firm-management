@@ -41,7 +41,7 @@ public class AuthenticationController {
             user = authService.signUpReq(sign);
         }
 
-        if (user.getId() != null) {
+        if (user.getId() != null && !photo.isEmpty()) {
             imageService.uploadImage(photo, user.getId());
         }else throw new UsernameNotFoundException("User id is null!");
 

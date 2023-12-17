@@ -27,7 +27,7 @@ return new
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CaseDto> getCaseById(@PathVariable Long id) {
+    public ResponseEntity<CaseDto> getCaseById(@PathVariable("id") Long id) {
         return new
                 ResponseEntity<>(caseService.getCaseById(id), HttpStatus.OK);
     }
