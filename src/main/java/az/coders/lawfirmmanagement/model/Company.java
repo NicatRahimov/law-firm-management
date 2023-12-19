@@ -2,8 +2,7 @@ package az.coders.lawfirmmanagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
@@ -11,6 +10,9 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "company")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Company {
 
     @Id

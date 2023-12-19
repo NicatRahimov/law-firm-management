@@ -13,13 +13,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Image {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @NotBlank(message = "Set photo name...")
     String name;
-
 }

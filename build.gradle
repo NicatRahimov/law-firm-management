@@ -43,6 +43,10 @@ dependencies {
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
 	testImplementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.1.0'
 
+
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1'
+
+
 }
 
 tasks.named('bootBuildImage') {

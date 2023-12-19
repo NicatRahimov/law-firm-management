@@ -46,6 +46,7 @@ public class User implements UserDetails {
     @NotBlank
     String password;
 
+    String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     Role role;

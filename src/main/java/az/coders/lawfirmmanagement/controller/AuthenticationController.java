@@ -33,17 +33,16 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> signUp(@ModelAttribute SignUpRequest sign,
-                                       @RequestParam("photo") MultipartFile photo) throws IOException {
+    public ResponseEntity<String> signUp(@RequestBody SignUpRequest sign) throws IOException {
         User user = new User();
+        System.out.println(sign);
         if (userService.getByUsername(sign.getUsername())==null &&
             userService.getByEmail(sign.getEmail())==null){
             user = authService.signUpReq(sign);
         }
-
-        if (user.getId() != null && !photo.isEmpty()) {
-            imageService.uploadImage(photo, user.getId());
-        }else throw new UsernameNotFoundException("User id is null!");
+//        if (user.getId() != null && !photo.isEmpty()) {
+//            imageService.uploadImage(photo, user.getId());
+//        }else throw new UsernameNotFoundException("User id is null!");
 
         return new ResponseEntity<>("good",
                 HttpStatusCode.valueOf(200));

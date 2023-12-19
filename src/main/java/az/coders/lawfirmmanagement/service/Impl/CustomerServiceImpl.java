@@ -62,17 +62,20 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
         if (NullChecker.isNull(customer)){
             return "No customer with id: "+id;
-        }else  customerRepository.deleteById(id);
+        }else {
+            customerRepository.deleteById(id);
+            return "Successfull";
+        }
 
     }
 
     @Override
     public String addCustomer(CustomerDto customerDto) {
-        return null;
+        return "ahsdbasnd";
     }
 
     @Override
     public String editCustomer(CustomerDto customerDto) {
-        return null;
+        return "ahsbda";
     }
 }
