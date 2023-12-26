@@ -50,7 +50,8 @@ public class SecurityConfiguration {
                                         "/api-docs",
                                         "/tasks/**",
                                         "/cases/**",
-                                "/companies/**"
+                                "/companies/**",
+                                "/home/**"
                                 )
                                 .permitAll()
                 );

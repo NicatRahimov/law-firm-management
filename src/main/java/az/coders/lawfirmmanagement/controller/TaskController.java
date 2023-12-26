@@ -29,7 +29,7 @@ public ResponseEntity<Task>getTaskById(@PathVariable Long id){
             ResponseEntity<>(taskService.getTaskById(id),HttpStatusCode.valueOf(200));
 }
 @PostMapping()
-    public ResponseEntity<String> addTask (@RequestBody Task task){
+    public ResponseEntity<String> addTask (@RequestBody TaskDto task){
     return new
             ResponseEntity<>(taskService.saveTask(task), HttpStatus.CREATED);
 }

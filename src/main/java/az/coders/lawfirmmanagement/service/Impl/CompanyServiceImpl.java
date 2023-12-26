@@ -5,6 +5,7 @@ import az.coders.lawfirmmanagement.exception.CompanyNotFound;
 import az.coders.lawfirmmanagement.model.Company;
 import az.coders.lawfirmmanagement.repository.CompanyRepository;
 import az.coders.lawfirmmanagement.service.CompanyService;
+import az.coders.lawfirmmanagement.util.NullChecker;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,15 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
+
     @Override
     public List<CompanyDto> getAllCompanies() {
-        List<Company>companies=companyRepository.findAll();
+        List<Company> companies = companyRepository.findAll();
 //        List<CompanyDto>dtos=new ArrayList<>();
 
-         List<CompanyDto> dtos1 = companies.stream().map(x -> modelMapper.map(x, CompanyDto.class)).toList();
+        List<CompanyDto> dtos1 = companies.stream().map(x -> modelMapper.map(x, CompanyDto.class)).toList();
 
-return dtos1;
+        return dtos1;
 //        for(Company c:
 //        companies){
 //            CompanyDto dto = CompanyDto.builder()
@@ -73,7 +75,35 @@ return dtos1;
     }
 
     @Override
-    public String editCompany(CompanyDto companyDto,Long id) {
-     return null;
+    public String editCompany(CompanyDto companyDto, Long id) {
+        Company company = companyRepository.findById(id).orElseThrow(RuntimeException::new);
+
+        if (NullChecker.isNotNull(companyDto.getName())) {
+            company.setName(companyDto.getName());
+        }
+        if (NullChecker.isNotNull(companyDto.getDescription())) {
+            company.setDescription(companyDto.getDescription());
+        }
+        if (NullChecker.isNotNull(companyDto.getAddress())) {
+            company.setAddress(companyDto.getAddress());
+        }
+        if (NullChecker.isNotNull(companyDto.getEmail())) {
+            company.setEmail(companyDto.getEmail());
+        }
+        if (NullChecker.isNotNull(companyDto.getCountry())) {
+            company.setCity(companyDto.getCity());
+        }
+        if (NullChecker.isNotNull(companyDto.getWebsite())) {
+            company.setWebsite(companyDto.getWebsite());
+        }
+        if (NullChecker.isNotNull(companyDto.getCity())) {
+            company.setCity(companyDto.getCity());
+        }
+        if (NullChecker.isNotNull(companyDto.getPhoneNumber())) {
+            company.setPhoneNumber(companyDto.getPhoneNumber());
+        }
+        companyRepository.save(company);
+
+        return "Edited successfully";
     }
 }

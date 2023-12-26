@@ -1,6 +1,7 @@
 package az.coders.lawfirmmanagement.controller;
 
 import az.coders.lawfirmmanagement.dto.CompanyDto;
+import az.coders.lawfirmmanagement.exception.CompanyNotFound;
 import az.coders.lawfirmmanagement.model.Company;
 import az.coders.lawfirmmanagement.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,10 @@ public class CompanyController {
         CompanyDto compById = companyService.getCompById(id);
         return new ResponseEntity<>(compById,HttpStatus.OK);
     }
-
     @PostMapping
-    public ResponseEntity<String> addCompany(CompanyDto companyDto){
+    public ResponseEntity<String> addCompany( @RequestBody CompanyDto companyDto){
        companyService.addCompany(companyDto);
-       return new
+       return new ResponseEntity<>("Successfully",HttpStatus.OK);
 
     }
 

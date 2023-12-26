@@ -19,5 +19,5 @@ public class TaskDto {
     Priority priority;
     String description;
     Integer remindDate;
-    Case aCase;
+    Long caseId;
 }
