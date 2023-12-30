@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  # PostgreSQL database
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1312
+    ports:
+      - "5532:5432"
+
+  # Spring Boot application
+  spring-app:
+    image: law_firm_management
+    container_name: backend_container
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1312
